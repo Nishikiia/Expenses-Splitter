@@ -1,7 +1,20 @@
 <script setup>
+import {ref, computed} from 'vue'
   import Header from './components/Header.vue'
   import Card from './components/Card.vue'
   import Section from './components/Section.vue'
+
+  const people = ref(['John', 'Carlos'])
+  const newPerson = ref('')
+
+  const addPerson = () => {
+    const name = newPerson.value.trim()
+
+    if(!name) return 
+
+    people.value.push(name)
+    newPerson.value = ''
+  }
 </script>
 
 <template>
@@ -9,7 +22,7 @@
   <Card>
         <main class="card">
         <form id="personForm" class="rowForm">
-            <input id="personInput" type="text" placeholder="Add person name"/>
+            <input id="personInput" type="text" placeholder="Add person name" v-model="newPerson">
             <button>Add Person</button>
         </form>
 
@@ -21,7 +34,11 @@
         </form>
 
         <Section title="People">
-          <ul id="peopleList" class="list"></ul>
+          <ul id="peopleList" class="list">
+              <list v-for="person in people" :key="person">
+                {{ person }}
+              </list>
+          </ul>
         </Section>
 
         <Section title="Expenses">
@@ -44,25 +61,44 @@
 </template>
 
 <style scoped>
-.rowForm {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 12px;
-}
+  .rowForm {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+  }
 
-input, select {
-    flex: 1;
+  input, select {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #c7d2fe;
+  }
+
+  button {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      background: #34774b;
+      color: #fcfcfc;
+      cursor: pointer;
+  }
+
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 8px;
+  }
+
+  .list li {
     padding: 10px;
     border-radius: 10px;
-    border: 1px solid #c7d2fe;
-}
+    background: #ccffd9;
+  }
 
-button {
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: none;
-    background: #34774b;
-    color: #fcfcfc;
-    cursor: pointer;
-}
+  #summaryList li {
+    background: #ccffd9;
+    color: #166534;
+  }
 </style>
